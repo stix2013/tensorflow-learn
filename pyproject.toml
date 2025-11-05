@@ -1,0 +1,27 @@
+[project]
+name = "tensorflow-learn"
+version = "0.1.0"
+description = "Workspace to learn Tensorflow"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "lstm",
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.4",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+    "stocks",
+    "tensorflow>=2.20.0",
+    "yfinance>=0.2.66",
+]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+lstm = { workspace = true }
+stocks = { workspace = true }
+
+[build-system]
+requires = ["uv_build>=0.9.6,<0.10.0"]
+build-backend = "uv_build"
