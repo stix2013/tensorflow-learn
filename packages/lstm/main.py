@@ -1,4 +1,5 @@
 from tensorflow import keras
+from tensorflow import config
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -6,6 +7,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 from datetime import datetime
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 CSV_FILENAME = "AAPL_stocks.csv"
 DATE_COL_NAME = "Date"
@@ -48,7 +51,7 @@ print("Date: {data[DATE_COL_NAME]}")
 
 prediction = data.loc[
     (data[DATE_COL_NAME] > datetime(2022,1,1)) &
-    (data[DATE_COL_NAME] < datetime(2025,10,1))
+    (data[DATE_COL_NAME] < datetime(2025,11,5))
 ]
 
 # plt.figure(figsize=(12,6))
@@ -96,9 +99,6 @@ model.add(keras.layers.Dense(OUTPUT_NEURON))
 
 model.summary()
 
-# Compile the model'
-# hp_learning_rate = hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])
-
 model.compile(
     optimizer=keras.optimizers.Adam(learning_rate=1e-3),
     loss="mae",
@@ -136,7 +136,7 @@ if SAVE_MODEL:
 
 plt.figure(figsize=(12,8))
 plt.plot(train['Date'], train['Close'], label="Train (Actual)", color="blue")
-# plt.plot(test['Date'], test['Close'], label="Test (Actual)", color="orange")
+plt.plot(test['Date'], test['Close'], label="Test (Actual)", color="orange")
 plt.plot(test['Date'], test['Predictions'], label="Predictions", color="red")
 plt.title("Our Stock Predictions")
 

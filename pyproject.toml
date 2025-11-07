@@ -21,6 +21,7 @@ members = ["packages/*"]
 [tool.uv.sources]
 lstm = { workspace = true }
 stocks = { workspace = true }
+commonlib = { workspace = true }
 
 [build-system]
 requires = ["uv_build>=0.9.6,<0.10.0"]

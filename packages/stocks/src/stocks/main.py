@@ -1,3 +1,6 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -7,25 +10,33 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.metrics import RootMeanSquaredError
 import pickle
 
-from parameters import (
+from commonlib.parameters import (
     TICKER,
     TIME_STEP,
     DENSE_NEURONS,
     DROPOUT_NEURONS,
     TRAIN_DATA_PERC,
     MODEL_FILE,
-    SCALER_FILE
+    SCALER_FILE,
+    LSTM_UNIT_1,
+    LSTM_UNIT_2,
+    BATCH_SIZE,
+    EPOCH_STEPS,
+    CSV_FILENAME
 )
 
-from create_model import create_model
+from commonlib.create_model import create_model
+from commonlib.get_data import get_data
+
 
 # --- Configuration ---
 # TICKER = "GOOGL"
-START_DATE = "2022-01-01"
-END_DATE = "2025-11-04"
+# START_DATE = "2022-01-01"
+# END_DATE = "2025-11-04"
 
 # 1. Retrieve Data
-df = yf.download(TICKER, start=START_DATE, end=END_DATE)
+# df = yf.download(TICKER, start=START_DATE, end=END_DATE)
+df = get_data(TICKER, saved_filename=CSV_FILENAME, used_saved=False)
 
 # 2. Prepare Data for Scaling (Use 'Close' prices)
 prices = df['Close'].values.reshape(-1, 1)
@@ -58,7 +69,13 @@ X_train, y_train = X[:train_size], y[:train_size]
 X_test, y_test = X[train_size:], y[train_size:]
 
 # Define the Keras Model
-model = create_model(time_step=TIME_STEP, dense_units=DENSE_NEURONS, dropout_ratio=DROPOUT_NEURONS)
+model = create_model(
+        time_step=TIME_STEP,
+        lstm_unit_1=LSTM_UNIT_1,
+        lstm_unit_2=LSTM_UNIT_2,
+        dense_units=DENSE_NEURONS,
+        dropout_ratio=DROPOUT_NEURONS
+    )
 
 # 3. Train the Model
 # Note: Training on the validation set (X_test, y_test) is common for checking performance
@@ -66,8 +83,8 @@ model = create_model(time_step=TIME_STEP, dense_units=DENSE_NEURONS, dropout_rat
 model.fit(
     X_train, y_train,
     validation_data=(X_test, y_test),
-    batch_size=64,
-    epochs=100, # Adjust epochs based on complexity and time
+    batch_size=BATCH_SIZE,
+    epochs=EPOCH_STEPS, # Adjust epochs based on complexity and time
     verbose=1
 )
 print("Model training finished.")

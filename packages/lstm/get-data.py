@@ -10,6 +10,6 @@ end_date = "2025-10-31"
 data = yf.download(ticker_symbol, start=start_date, end=end_date, auto_adjust=False)
 
 # 'data' is now a pandas DataFrame containing 'Open', 'High', 'Low', 'Close', 'Adj Close', and 'Volume'
-print(data.head())
-
+# remove 3rd first row
+print(data.head()['Volume'])
 data.to_csv('AppleTicker.csv')

@@ -5,7 +5,8 @@ build/
 dist/
 wheels/
 *.egg-info
+*.pkl
 *.keras
-
+data.csv
 # Virtual environments
 .venv

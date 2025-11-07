@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = [
+    "commonlib",
     "matplotlib>=3.10.7",
     "numpy>=2.3.4",
     "pandas>=2.3.3",
@@ -13,3 +14,6 @@ dependencies = [
     "tensorflow>=2.20.0",
     "yfinance>=0.2.66",
 ]
+
+[tool.uv.sources]
+commonlib = { workspace = true }

@@ -1,6 +1,8 @@
-import numpy as np
+from numpy import array as np_array
+from pandas import DataFrame
+from datetime import timedelta
 
-def predict_multi_day(model, scaler, last_actual_window, num_future_days, time_step):
+def predict_multi_day(model, scaler, last_actual_window, num_future_days, time_step, last_date):
     """
     Predicts prices for a specified number of future days recursively.
     
@@ -11,7 +13,7 @@ def predict_multi_day(model, scaler, last_actual_window, num_future_days, time_s
         num_future_days (int): How many days into the future to predict.
         time_step (int): The sample data len
     Returns:
-        np.array: Unscaled price predictions for the future days.
+        pd.DataFrame: Unscaled price predictions for the future days.
     """
     
     # 1. Start the list with the last actual window (scaled)
@@ -20,15 +22,17 @@ def predict_multi_day(model, scaler, last_actual_window, num_future_days, time_s
     # 2. List to store future predictions (scaled)
     lst_output = []
     i = 0
-    
+    lst_input = []
+
     while i < num_future_days:
         if len(temp_input) > time_step:
             # Drop the oldest data point and take the latest TIME_STEP elements
-            x_input = np.array(temp_input[1:]) 
+            x_input = np_array(temp_input[1:]) 
         else:
             # Use the initial last_actual_window (already set)
-            x_input = np.array(temp_input)
+            x_input = np_array(temp_input)
             
+        lst_input.append(temp_input[i])
         # Reshape for model: (1, TIME_STEP, 1)
         x_input = x_input.reshape(1, time_step, 1)
         
@@ -44,6 +48,17 @@ def predict_multi_day(model, scaler, last_actual_window, num_future_days, time_s
         i += 1
     
     # 3. Inverse transform the scaled predictions
-    final_predictions = scaler.inverse_transform(np.array(lst_output).reshape(-1, 1))
-    
-    return final_predictions
+    final_predictions = scaler.inverse_transform(np_array(lst_output).reshape(-1, 1))
+
+    result = []
+    date_index = last_date
+    for i in final_predictions:
+        
+        result.append({
+            'Date': date_index.strftime('%Y-%m-%d'),
+            'Price': i[0]
+        })
+        date_index = date_index + timedelta(days=1)
+
+    # return final_predictions
+    return DataFrame(result)

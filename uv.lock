@@ -4,6 +4,7 @@ requires-python = "==3.13.*"
 
 [manifest]
 members = [
+    "commonlib",
     "lstm",
     "stocks",
     "tensorflow-learn",
@@ -99,6 +100,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/c4/26/b9924fa27db384bdcd97ab83b4f0a8058d96ad9626ead570674d5e737d90/charset_normalizer-3.4.4-cp313-cp313-win_amd64.whl", hash = "sha256:b435cba5f4f750aa6c0a0d92c541fb79f69a387c91e61f1795227e4ed9cece14", size = 107092, upload-time = "2025-10-14T04:41:31.188Z" },
     { url = "https://files.pythonhosted.org/packages/af/8f/3ed4bfa0c0c72a7ca17f0380cd9e4dd842b09f664e780c13cff1dcf2ef1b/charset_normalizer-3.4.4-cp313-cp313-win_arm64.whl", hash = "sha256:542d2cee80be6f80247095cc36c418f7bddd14f4a6de45af91dfad36d817bba2", size = 100408, upload-time = "2025-10-14T04:41:32.624Z" },
     { url = "https://files.pythonhosted.org/packages/0a/4c/925909008ed5a988ccbb72dcc897407e5d6d3bd72410d69e051fc0c14647/charset_normalizer-3.4.4-py3-none-any.whl", hash = "sha256:7a32c560861a02ff789ad905a2fe94e3f840803362c84fecf1851cb4cf3dc37f", size = 53402, upload-time = "2025-10-14T04:42:31.76Z" },
+]
+
+[[package]]
+name = "commonlib"
+version = "0.1.0"
+source = { editable = "packages/commonlib" }
+dependencies = [
+    { name = "tensorflow" },
+    { name = "yfinance" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tensorflow", specifier = ">=2.20.0" },
+    { name = "yfinance", specifier = ">=0.2.66" },
 ]
 
 [[package]]
@@ -354,6 +370,7 @@ name = "lstm"
 version = "0.1.0"
 source = { editable = "packages/lstm" }
 dependencies = [
+    { name = "commonlib" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
@@ -365,6 +382,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "commonlib", editable = "packages/commonlib" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "numpy", specifier = ">=2.3.4" },
     { name = "pandas", specifier = ">=2.3.3" },
@@ -849,6 +867,7 @@ name = "stocks"
 version = "0.1.0"
 source = { editable = "packages/stocks" }
 dependencies = [
+    { name = "commonlib" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
@@ -859,6 +878,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "commonlib", editable = "packages/commonlib" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "numpy", specifier = ">=2.3.4" },
     { name = "pandas", specifier = ">=2.3.3" },
