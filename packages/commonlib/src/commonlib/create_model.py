@@ -1,11 +1,14 @@
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout
+from tensorflow.keras.layers import Input, LSTM, Dense, Dropout
 from tensorflow.keras.metrics import RootMeanSquaredError
 
 def create_model(time_step, lstm_unit_1 = 64, lstm_unit_2 =64, dense_units = 128, dropout_ratio = 0.8):
     model = Sequential([
+        # Inputs
+        Input(shape=(time_step,1)),
+
         # First Layer
-        LSTM(units=lstm_unit_1, return_sequences=True, input_shape=(time_step,1)),
+        LSTM(units=lstm_unit_1, return_sequences=True),
 
         # Second Layer
         LSTM(units=lstm_unit_2, return_sequences=False),

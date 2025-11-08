@@ -53,8 +53,8 @@ print(f"Predicted closing price for the next market day: $ {predicted_price[0, 0
 
 # multiple days forcasting
 # Scaled the prices data
-last_window_scaled = loaded_scaler.transform(last_window)
-future_forecast = predict_multi_day(loaded_model, loaded_scaler, last_window_scaled, NUM_FUTURE_DAYS, TIME_STEP, recent_df.index[-1])
+# last_window_scaled = loaded_scaler.transform(last_window)
+# future_forecast = predict_multi_day(loaded_model, loaded_scaler, last_window_scaled, NUM_FUTURE_DAYS, TIME_STEP, recent_df.index[-1])
 
-print(f"\n{NUM_FUTURE_DAYS}-Day Forecast:\n")
-print(future_forecast)
+# print(f"\n{NUM_FUTURE_DAYS}-Day Forecast:\n")
+# print(future_forecast)

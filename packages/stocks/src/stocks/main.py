@@ -1,14 +1,14 @@
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-import yfinance as yf
-import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout
-from tensorflow.keras.metrics import RootMeanSquaredError
 import pickle
+
+from sklearn.preprocessing import MinMaxScaler
+
+from tensorflow.keras.models import Sequential # pyright: ignore[reportMissingImports]
+from tensorflow.keras.layers import LSTM, Dense, Dropout # pyright: ignore[reportMissingImports]
+from tensorflow.keras.metrics import RootMeanSquaredError #  pyright: ignore[reportMissingImports]
 
 from commonlib.parameters import (
     TICKER,
@@ -22,21 +22,15 @@ from commonlib.parameters import (
     LSTM_UNIT_2,
     BATCH_SIZE,
     EPOCH_STEPS,
-    CSV_FILENAME
+    CSV_FILENAME,
+    YEAR_COUNT,
 )
 
 from commonlib.create_model import create_model
 from commonlib.get_data import get_data
 
-
-# --- Configuration ---
-# TICKER = "GOOGL"
-# START_DATE = "2022-01-01"
-# END_DATE = "2025-11-04"
-
 # 1. Retrieve Data
-# df = yf.download(TICKER, start=START_DATE, end=END_DATE)
-df = get_data(TICKER, saved_filename=CSV_FILENAME, used_saved=False)
+df = get_data(TICKER, year_back=YEAR_COUNT,saved_filename=CSV_FILENAME, used_saved=True)
 
 # 2. Prepare Data for Scaling (Use 'Close' prices)
 prices = df['Close'].values.reshape(-1, 1)
