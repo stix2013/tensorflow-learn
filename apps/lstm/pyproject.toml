@@ -2,18 +2,24 @@
 name = "lstm"
 version = "0.1.0"
 description = "Add your description here"
-readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = [
-    "commonlib",
+    "py-commonlib",
     "matplotlib>=3.10.7",
     "numpy>=2.3.4",
     "pandas>=2.3.3",
     "scikit-learn>=1.7.2",
     "seaborn>=0.13.2",
     "tensorflow>=2.20.0",
-    "yfinance>=0.2.66",
+    "yfinance>=0.2.66"
 ]
 
 [tool.uv.sources]
-commonlib = { workspace = true }
+py-commonlib = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/py_stocks"]

@@ -6,16 +6,16 @@ This monorepo is a workspace dedicated to learning and implementing stock price 
 
 The monorepo is organized into several packages, each serving a specific purpose:
 
--   **`commonlib`**: A shared Python library containing reusable components and utilities for stock data handling and model creation.
+-   **`packages/py-commonlib`**: A shared Python library containing reusable components and utilities for stock data handling and model creation.
     -   `create_model.py`: Defines a standard LSTM model architecture using Keras.
     -   `get_data.py`: Handles fetching historical stock data from Yahoo Finance (`yfinance`).
     -   `predict_multi_days.py`: Implements the logic for forecasting stock prices for multiple future days.
 
--   **`lstm`**: This package focuses on training and evaluating LSTM models for stock prediction.
+-   **`apps/lstm`**: This package focuses on training and evaluating LSTM models for stock prediction.
     -   `main.py`: A script for data preprocessing, training an LSTM model, and visualizing its performance.
 
--   **`stocks`**: This package provides functionalities for training and making predictions on stock prices, leveraging the `commonlib`.
-    -   `main.py`: Script for fetching data, scaling it, training an LSTM model, and saving the trained model and scaler.
+-   **`apps/stocks`**: This package provides functionalities for training and making predictions on stock prices, leveraging the `py-commonlib`.
+    -   `train.py`: Script for fetching data, scaling it, training an LSTM model, and saving the trained model and scaler.
     -   `predict.py`: Script for loading a pre-trained model and scaler to make single-day and multi-day stock price predictions.
 
 ## Technologies Used
@@ -51,21 +51,21 @@ To set up and run this project, ensure you have `uv` installed.
     (This currently prints "Hello from tensorflow!")
 
 4.  **Train an LSTM model (e.g., for Apple stock):**
-    Navigate to the `stocks` package and run its main training script. You might need to adjust parameters in `packages/commonlib/src/commonlib/parameters.py` or directly within the script.
+    Navigate to the `stocks` package and run its main training script.
     ```bash
-    cd packages/stocks
-    python src/stocks/main.py
+    cd apps/stocks
+    python src/train.py
     ```
 
 5.  **Make predictions:**
     After training, you can use the prediction script.
     ```bash
-    python src/stocks/predict.py
+    python src/predict.py
     ```
 
 ## Data
 
-The project uses `yfinance` to download historical stock data. Configuration for the ticker symbol and other data parameters can be found in `packages/commonlib/src/commonlib/parameters.py`.
+The project uses `yfinance` to download historical stock data.
 
 ## Contributing
 

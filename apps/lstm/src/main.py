@@ -6,24 +6,32 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import pickle
 from datetime import datetime
+from py_commonlib.get_data import get_data
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 CSV_FILENAME = "AAPL_stocks.csv"
+SCALER_FILENAME = "AAP_scaler.pkl"
 DATE_COL_NAME = "Date"
-PRICE_COL_NAME = "Close"
-TRAINING_RATE = 0.95
+PRICE_COL_NAME = "Adj Close"
+TRAINING_RATE = 0.6
 WINDOW_SIZE = 60
 SAVE_MODEL = False
-EPOCH_STEPS = 20
+EPOCH_STEPS = 100
 BATCH_SIZE = 32
-DROPOUT_NEURONS = 0.5
+DROPOUT_NEURONS = 0.3
 OUTPUT_NEURON = 1
+UNIT_LSTM_1 = 64
+UNIT_LSTM_2 = 64
 DENSE_NEURONS = 128
 DENSE_ACT_METHODS = "relu"
 
+print("Get data from CSV")
 data = pd.read_csv(CSV_FILENAME)
+# print("Get data from Yahoo Finance")
+# data = get_data(used_saved=False)
 
 # print(data.head())
 # print(data.info())
@@ -66,6 +74,11 @@ training_data_len = int(np.ceil(len(dataset) * TRAINING_RATE))
 scaler = StandardScaler()
 scaled_data = scaler.fit_transform(dataset)
 
+# Save the fitted scaler (CRITICAL for prediction)
+with open(SCALER_FILENAME, 'wb') as file:
+    pickle.dump(scaler, file)
+print(f"✅ Scaler saved to {SCALER_FILENAME}")
+
 training_data = scaled_data[:training_data_len]
 
 X_train, Y_train = [], []
@@ -83,10 +96,10 @@ X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 model = keras.models.Sequential()
 
 # First Layer
-model.add(keras.layers.LSTM(64, return_sequences=True, input_shape=(X_train.shape[1],1)))
+model.add(keras.layers.LSTM(UNIT_LSTM_1, return_sequences=True, input_shape=(X_train.shape[1],1)))
 
 # Second Layer
-model.add(keras.layers.LSTM(64, return_sequences=False))
+model.add(keras.layers.LSTM(UNIT_LSTM_2, return_sequences=False))
 
 # 3rd Layer
 model.add(keras.layers.Dense(DENSE_NEURONS, activation=DENSE_ACT_METHODS))
@@ -135,9 +148,9 @@ if SAVE_MODEL:
     model.save('AAPL_stocks_model.keras')
 
 plt.figure(figsize=(12,8))
-plt.plot(train['Date'], train['Close'], label="Train (Actual)", color="blue")
-plt.plot(test['Date'], test['Close'], label="Test (Actual)", color="orange")
-plt.plot(test['Date'], test['Predictions'], label="Predictions", color="red")
+plt.plot(train[DATE_COL_NAME], train[PRICE_COL_NAME], label="Train (Actual)", color="blue")
+plt.plot(test[DATE_COL_NAME], test[PRICE_COL_NAME], label="Test (Actual)", color="orange")
+plt.plot(test[DATE_COL_NAME], test['Predictions'], label="Predictions", color="red")
 plt.title("Our Stock Predictions")
 
 plt.xlabel("Date")

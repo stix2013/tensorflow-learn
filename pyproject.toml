@@ -1,28 +1,20 @@
 [project]
-name = "tensorflow-learn"
+name = "stocks-monorepo"
 version = "0.1.0"
-description = "Workspace to learn Tensorflow"
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "lstm",
-    "matplotlib>=3.10.7",
-    "numpy>=2.3.4",
-    "pandas>=2.3.3",
-    "scikit-learn>=1.7.2",
-    "stocks",
-    "tensorflow>=2.20.0",
-    "yfinance>=0.2.66",
-]
+requires-python = ">=3.11,<3.14"
 
 [tool.uv.workspace]
-members = ["packages/*"]
+members = [
+  "apps/*",
+  "packages/*"
+]
 
-[tool.uv.sources]
-lstm = { workspace = true }
-stocks = { workspace = true }
-commonlib = { workspace = true }
+[tool.ruff]
+src = [
+ "apps/stocks/src",
+ "apps/lstm/src"
+]
+line-length = 88
 
-[build-system]
-requires = ["uv_build>=0.9.6,<0.10.0"]
-build-backend = "uv_build"
+[tool.ruff.lint]
+select = ["E", "F", "I"]

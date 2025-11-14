@@ -1,8 +1,8 @@
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Input, LSTM, Dense, Dropout
-from tensorflow.keras.metrics import RootMeanSquaredError
+from tensorflow.keras.models import Sequential # pyright: ignore[reportMissingImports]
+from tensorflow.keras.layers import Input, LSTM, Dense, Dropout # pyright: ignore[reportMissingImports]
+from tensorflow.keras.metrics import RootMeanSquaredError # pyright: ignore[reportMissingImports]
 
-def create_model(time_step, lstm_unit_1 = 64, lstm_unit_2 =64, dense_units = 128, dropout_ratio = 0.8):
+def create_model(time_step, lstm_unit_1 = 64, lstm_unit_2 =64, dense_units = 128, dropout_rate = 0.8):
     model = Sequential([
         # Inputs
         Input(shape=(time_step,1)),
@@ -17,7 +17,7 @@ def create_model(time_step, lstm_unit_1 = 64, lstm_unit_2 =64, dense_units = 128
         Dense(units=dense_units, activation="relu"),
 
         # 4th Layer
-        Dropout(dropout_ratio),
+        Dropout(dropout_rate),
 
         # Output layer
         Dense(units=1)

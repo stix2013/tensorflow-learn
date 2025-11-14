@@ -1,8 +1,8 @@
 import yfinance as yf
-from tensorflow.keras.models import load_model
+from tensorflow.model.keras import load_model # pyright: ignore[reportMissingImports]
 import pickle
 
-from commonlib.parameters import (
+from py_commonlib import (
     TICKER,
     TIME_STEP,
     MODEL_FILE,
@@ -10,17 +10,10 @@ from commonlib.parameters import (
     TICKER_PERIOD,
     NUM_FUTURE_DAYS
 )
-from commonlib.predict_multi_days import predict_multi_day
-from commonlib.get_data import get_data
+from py_commonlib.predict_multi_days import predict_multi_day
+from py_commonlib.get_data import get_data
 
-# --- Configuration ---
-# TICKER = "GOOGL"
-# START_DATE = "2023-01-01"
-# END_DATE = "2025-11-03"
-# TIME_STEP = 60 # Look-back period
-# MODEL_FILE = 'GOOGLE_prediction_model.keras'
-# SCALER_FILE = 'scaler.pkl'
-
+# load the save model
 loaded_model = load_model(MODEL_FILE)
 print(f"✅ Model successfully loaded for prediction.")
 

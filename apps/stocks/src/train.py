@@ -10,11 +10,11 @@ from tensorflow.keras.models import Sequential # pyright: ignore[reportMissingIm
 from tensorflow.keras.layers import LSTM, Dense, Dropout # pyright: ignore[reportMissingImports]
 from tensorflow.keras.metrics import RootMeanSquaredError #  pyright: ignore[reportMissingImports]
 
-from commonlib.parameters import (
+from py_commonlib import (
     TICKER,
     TIME_STEP,
     DENSE_NEURONS,
-    DROPOUT_NEURONS,
+    DROPOUT_RATE,
     TRAIN_DATA_PERC,
     MODEL_FILE,
     SCALER_FILE,
@@ -24,13 +24,14 @@ from commonlib.parameters import (
     EPOCH_STEPS,
     CSV_FILENAME,
     YEAR_COUNT,
+    DATE_USED_SAVED
 )
 
-from commonlib.create_model import create_model
-from commonlib.get_data import get_data
+from py_commonlib.create_model import create_model
+from py_commonlib.get_data import get_data
 
 # 1. Retrieve Data
-df = get_data(TICKER, year_back=YEAR_COUNT,saved_filename=CSV_FILENAME, used_saved=True)
+df = get_data(TICKER, year_back=YEAR_COUNT,saved_filename=CSV_FILENAME, used_saved=DATE_USED_SAVED)
 
 # 2. Prepare Data for Scaling (Use 'Close' prices)
 prices = df['Close'].values.reshape(-1, 1)
@@ -68,7 +69,7 @@ model = create_model(
         lstm_unit_1=LSTM_UNIT_1,
         lstm_unit_2=LSTM_UNIT_2,
         dense_units=DENSE_NEURONS,
-        dropout_ratio=DROPOUT_NEURONS
+        dropout_rate=DROPOUT_RATE
     )
 
 # 3. Train the Model

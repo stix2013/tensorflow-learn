@@ -17,3 +17,10 @@ def get_data(ticker_symbol = 'AAPL', year_back=1, interval='1d', saved_filename 
     data.to_csv(saved_filename)
 
   return data
+
+if __name__ == "__main__":
+  print("Get Data from Yahoo Finance")
+  data = get_data(used_saved=False)
+  print(data.head())
+  print(data['Price'].values[:5])
+  data.describe()
